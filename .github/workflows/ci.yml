@@ -33,7 +33,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Prettier Auto Fix
         run: |
@@ -41,12 +41,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "chore: auto-fix Prettier formatting" || echo "No changes"
-          git push
-
+          git diff --cached --quiet || git commit -m "chore: auto-fix Prettier formatting"
+          git push origin HEAD:${{ github.head_ref }}
 
   # --------------------------------
-  # 2️⃣ dev → test (Lint + Coverage)
+  # 2️⃣ dev → test (Lint + Tests)
   # --------------------------------
   lint-and-test:
     if: github.base_ref == 'test' && github.head_ref == 'dev'
@@ -59,14 +58,13 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm install
+      - run: npm ci
 
       - name: Run ESLint
         run: npm run lint
 
-      - name: Run Tests with Coverage
-        run: npm test
-
+      - name: Run Tests
+        run: npm test -- --coverage
 
   # --------------------------------
   # 3️⃣ test → prod (Auto Merge)

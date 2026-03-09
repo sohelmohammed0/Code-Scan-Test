@@ -12,7 +12,6 @@ permissions:
   pull-requests: write
 
 jobs:
-
   # --------------------------------
   # 1️⃣ feature → dev (Prettier)
   # --------------------------------
@@ -44,7 +43,6 @@ jobs:
           git commit -m "chore: auto-fix Prettier formatting" || echo "No changes"
           git push
 
-
   # --------------------------------
   # 2️⃣ dev → test (Lint + Coverage)
   # --------------------------------
@@ -66,7 +64,6 @@ jobs:
 
       - name: Run Tests with Coverage
         run: npm test
-
 
   # --------------------------------
   # 3️⃣ test → prod (Auto Merge)
