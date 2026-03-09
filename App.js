@@ -13,6 +13,8 @@ function App() {
     }
   };
 
+  /*CHECK*/
+
   const handleGreeting = () => {
     if (greeting.trim() !== '') {
       alert(`Hello, ${greeting}!`);
