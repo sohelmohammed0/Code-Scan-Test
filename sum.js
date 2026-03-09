@@ -5,3 +5,7 @@ function sum(a, b) {
 module.exports = sum;
 
 // test lint pipeline
+
+
+const   x=1
+console.log( x )
