@@ -7,7 +7,6 @@ on:
       - test
 
 jobs:
-
   prettier-check:
     if: github.base_ref == 'dev' && startsWith(github.head_ref, 'feature/')
     runs-on: ubuntu-latest
@@ -54,8 +53,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Merge into prod
-        uses: "peter-evans/merge-pull-request@v4"
+        uses: 'peter-evans/merge-pull-request@v4'
         with:
           merge-method: squash
-          commit-title: "Auto-merged from dev to prod after checks"
+          commit-title: 'Auto-merged from dev to prod after checks'
           github-token: ${{ secrets.GITHUB_TOKEN }}
