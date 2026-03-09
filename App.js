@@ -1,1 +1,1 @@
-const unusedVariable = 123
+const unusedVariable = 123;
