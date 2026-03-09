@@ -1,0 +1,35 @@
+{
+  "name": "code-scan-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "lint": "eslint .",
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sohelmohammed0/Code-Scan-Test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sohelmohammed0/Code-Scan-Test/issues"
+  },
+  "homepage": "https://github.com/sohelmohammed0/Code-Scan-Test#readme",
+  "devDependencies": {
+    "prettier": "^3.8.1",
+    "eslint": "^8.45.0",
+    "jest": "^29.7.0",
+    "lint-staged": "^13.2.0"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  }
+}

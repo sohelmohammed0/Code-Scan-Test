@@ -1,0 +1,63 @@
+name: Branch Quality Pipeline
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - test
+
+jobs:
+
+  prettier-check:
+    if: github.base_ref == 'dev' && startsWith(github.head_ref, 'feature/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Run Prettier and auto-fix
+        run: |
+          npm run format:fix
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: auto-fix Prettier formatting" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.head_ref }}
+
+  lint-and-test:
+    if: github.base_ref == 'test' && github.head_ref == 'dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Run ESLint
+        run: npm run lint
+      - name: Run Tests with Coverage
+        run: npm test
+
+  auto-merge-prod:
+    if: github.base_ref == 'test' && github.head_ref == 'dev'
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Merge into prod
+        uses: peter-evans/merge-pull-request@v4
+        with:
+          merge-method: squash
+          commit-title: "Auto-merged from dev to prod after checks"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # check
