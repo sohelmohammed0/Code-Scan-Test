@@ -1,53 +1,38 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState } from "react";
 
 function App() {
-  const [items, setItems] = useState(['React', 'JavaScript', 'CSS']);
-  const [newItem, setNewItem] = useState('');
-  const [greeting, setGreeting] = useState(''); // new feature
+  const [name, setName] = useState("");
+  const [greeting, setGreeting] = useState("");
 
-  const addItem = () => {
-    if (newItem.trim() !== '') {
-      setItems([...items, newItem]);
-      setNewItem('');
-    }
+  const handleChange = (e) => {
+    setName(e.target.value);
   };
 
-  /*CHECK*/
-
-  const handleGreeting = () => {
-    if (greeting.trim() !== '') {
-      alert(`Hello, ${greeting}!`);
-      setGreeting('');
+  const handleGreet = () => {
+    if (name.trim() !== "sohel") {
+      setGreeting(`Hello, ${name}! Welcome to the app.`);
+    } else {
+      setGreeting("Please enter your name.");
     }
   };
 
   return (
-    <div className="App">
-      <h1>My Sample React App</h1>
-
-      {/* New Greeting Feature */}
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>React Greeting App</h1>
       <input
         type="text"
-        placeholder="Sohel Mohammed"
-        value={greeting}
-        onChange={(e) => setGreeting(e.target.value)}
+        value={name}
+        onChange={handleChange}
+        placeholder="Enter your name"
+        style={{ padding: "10px", fontSize: "16px" }}
       />
-      <button onClick={handleGreeting}>Greet Me</button>
-
-      <input
-        type="text"
-        value={newItem}
-        onChange={(e) => setNewItem(e.target.value)}
-        placeholder="Add a new item"
-      />
-      <button onClick={addItem}>Add</button>
-
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+      <button
+        onClick={handleGreet}
+        style={{ marginLeft: "10px", padding: "10px", fontSize: "16px" }}
+      >
+        Greet
+      </button>
+      {greeting && <p style={{ marginTop: "20px", fontSize: "18px" }}>{greeting}</p>}
     </div>
   );
 }
