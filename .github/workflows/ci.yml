@@ -12,14 +12,22 @@ jobs:
     if: github.base_ref == 'dev' && startsWith(github.head_ref, 'feature/')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout PR branch properly
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}        # Checkout the PR branch
+          repository: ${{ github.repository }}
+          token: ${{ secrets.PAT_TOKEN }}    # Use PAT for checkout/push
+          fetch-depth: 0                     # Full history required for commit/push
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install dependencies
         run: npm install
+
       - name: Run Prettier and auto-fix
         run: |
           npm run format:fix
@@ -27,7 +35,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "chore: auto-fix Prettier formatting" || echo "No changes to commit"
-          # Push using PAT token to avoid permission errors
           git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.head_ref }}
 
   lint-and-test:
@@ -60,5 +67,3 @@ jobs:
           merge-method: squash
           commit-title: "Auto-merged from dev to prod after checks"
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-          # CHECK
