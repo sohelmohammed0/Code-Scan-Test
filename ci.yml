@@ -27,7 +27,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "chore: auto-fix Prettier formatting" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.head_ref }}
 
   lint-and-test:
     if: github.base_ref == 'test' && github.head_ref == 'dev'
@@ -54,8 +54,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Merge into prod
-        uses: "peter-evans/merge-pull-request@v4"
+        uses: peter-evans/merge-pull-request@v4
         with:
           merge-method: squash
           commit-title: "Auto-merged from dev to prod after checks"
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # check
