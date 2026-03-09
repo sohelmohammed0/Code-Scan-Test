@@ -60,3 +60,5 @@ jobs:
           merge-method: squash
           commit-title: "Auto-merged from dev to prod after checks"
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # CHECK
